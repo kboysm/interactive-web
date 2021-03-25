@@ -1,5 +1,6 @@
 import { Hill } from './hill.js';
 import { SheepController } from './sheep-controller.js';
+import  { Sun } from './sun.js'
 
 class App {
     constructor() {
@@ -14,7 +15,7 @@ class App {
         ];
 
         this.SheepController = new SheepController();
-
+        this.sun = new Sun();
         window.addEventListener('resize', this.resize.bind(this), false);
         this.resize();
         requestAnimationFrame(this.animate.bind(this)); // 비동기 , 브라우저가 실행 시기를 결정 , 모니터 주사율에 맞춰 함수를 실행
@@ -29,6 +30,7 @@ class App {
         this.canvas.height = this.stageHeight * 2;
         this.ctx.scale(2, 2);
         //The CanvasRenderingContext2D.scale() method of the Canvas 2D API adds a scaling transformation to the canvas units horizontally and/or vertically.
+        this.sun.resize(this.stageWidth, this.stageHeight);
         for (let i= 0; i< this.hills.length; i++) {
             this.hills[i].resize(this.stageWidth, this.stageHeight);
         }
@@ -42,6 +44,7 @@ class App {
 
         this.ctx.clearRect(0, 0, this.stageWidth, this.stageHeight);
         //The CanvasRenderingContext2D.clearRect() method of the Canvas 2D API erases the pixels in a rectangular area by setting them to transparent black.
+        this.sun.draw(this.ctx, t);
         let dots;
         for (let i =0; i < this.hills.length; i++) {
             dots = this.hills[i].draw(this.ctx);
