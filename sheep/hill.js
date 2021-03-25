@@ -2,7 +2,7 @@ export class Hill {
     constructor(color, speed, total) {
         this.color = color;
         this.speed = speed;
-        this.total = total;
+        this.total = total; // 언덕 포인트 갯수
     }
 
     resize(stageWidth, stageHeight) {
@@ -28,6 +28,16 @@ export class Hill {
         let cur = this.points[0];
         let prev = cur;
         let dots = [];
+        cur.x += this.speed;
+
+        if(cur.x > -this.gap) {
+            this.points.unshift({
+                x:-(this.gap * 2),
+                y: this.getY()
+            })
+        } else if ( cur.x > this.stageWidth + this.gap) {
+            this.points.splice(-1);
+        }
 
         ctx.moveTo(cur.x, cur.y);
         // 선 그리기 시작 좌표 함수 , 선 그리기 위치로 이동
@@ -36,7 +46,7 @@ export class Hill {
 
         for (let i = 1; i < this.points.length; i++) {
             cur = this.points[i];
-
+            cur.x += this.speed;
             const cx = (prev.x + cur.x) / 2;
             const cy = (prev.y + cur.y) / 2;
             ctx.quadraticCurveTo(prev.x, prev.y, cx, cy); // 시작점 , 종료점 사이에 제어점 좌표를 입력하고 시작점과 종료점의 선을 곡선으로
