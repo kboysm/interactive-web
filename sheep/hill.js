@@ -23,13 +23,14 @@ export class Hill {
     draw(ctx) {
         ctx.fillStyle = this.color;
         ctx.beginPath();
-
+        //The CanvasRenderingContext2D.beginPath() method of the Canvas 2D API starts a new path by emptying the list of sub-paths. Call this method when you want to create a new path.
+        // 경로를 다시 그려줌
         let cur = this.points[0];
         let prev = cur;
         let dots = [];
 
         ctx.moveTo(cur.x, cur.y);
-
+        // 선 그리기 시작 좌표 함수 , 선 그리기 위치로 이동
         let prevCx = cur.x;
         let prevCy = cur.y;
 
@@ -38,7 +39,7 @@ export class Hill {
 
             const cx = (prev.x + cur.x) / 2;
             const cy = (prev.y + cur.y) / 2;
-            ctx.quadraticCurveTo(prev.x, prev.y, cx, cy);
+            ctx.quadraticCurveTo(prev.x, prev.y, cx, cy); // 시작점 , 종료점 사이에 제어점 좌표를 입력하고 시작점과 종료점의 선을 곡선으로
 
             dots.push({
                 x1: prevCx,
@@ -55,10 +56,10 @@ export class Hill {
 
         }
 
-        ctx.lineTo(prev.x, prev.y);
+        ctx.lineTo(prev.x, prev.y); // 선 그리기 종료 좌표 함수, 좌표 위치까지 선 그리기
         ctx.lineTo(this.stageWidth, this.stageHeight);
         ctx.lineTo(this.points[0].x, this.stageHeight);
-        ctx.fill();
+        ctx.fill(); // 지정된 색을 넣어줌
 
         return dots;
     }
