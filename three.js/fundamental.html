@@ -12,29 +12,39 @@
     <script>
         
 function main() {
-  const canvas = document.querySelector('#c');
-  const renderer = new THREE.WebGLRenderer({canvas}); 
+    const canvas = document.querySelector('#c');
+    const renderer = new THREE.WebGLRenderer({canvas}); 
 
-  const fov = 75; // 수직각 치수
-  const aspect = 1;  // 캔버스 디스플레이
-  const near = 0.1; //정육면체라고 가정하면 내 눈에서 가장 가까운 면을 의미 
-  const far = 5; // far은 가장 먼 면 즉 반대편 면을 의미
-  const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-  camera.position.z = 2;
+    const fov = 75; // 수직각 치수
+    const aspect = 1;  // 캔버스 디스플레이
+    const near = 0.1; //정육면체라고 가정하면 내 눈에서 가장 가까운 면을 의미 
+    const far = 5; // far은 가장 먼 면 즉 반대편 면을 의미
+    const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+    camera.position.z = 2;
 
-  const scene = new THREE.Scene();
+    const scene = new THREE.Scene();
 
-  const boxWidth = 1;
-  const boxHeight = 1;
-  const boxDepth = 1;
-  const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
+    const boxWidth = 1;
+    const boxHeight = 1;
+    const boxDepth = 1;
+    const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
 
-  const material = new THREE.MeshBasicMaterial({color: 0x44aa88});  // greenish blue
+    const material = new THREE.MeshBasicMaterial({color: 0x44aa88});  // greenish blue
 
-  const cube = new THREE.Mesh(geometry, material);
-  scene.add(cube);
-
-  renderer.render(scene, camera);
+    const cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+    function render(time) {
+        time *= 0.001;  // convert time to seconds
+        
+        cube.rotation.x = time;
+        cube.rotation.y = time;
+        
+        renderer.render(scene, camera);
+        
+        requestAnimationFrame(render);
+    }
+    requestAnimationFrame(render);
+    renderer.render(scene, camera);
 }
 
 main();
