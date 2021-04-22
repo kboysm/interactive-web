@@ -16,7 +16,7 @@ function main() {
     const renderer = new THREE.WebGLRenderer({canvas}); 
 
     const fov = 75; // 수직각 치수
-    const aspect = 1;  // 캔버스 디스플레이
+    const aspect = 2;  // 캔버스 디스플레이
     const near = 0.1; //정육면체라고 가정하면 내 눈에서 가장 가까운 면을 의미 
     const far = 5; // far은 가장 먼 면 즉 반대편 면을 의미
     const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
@@ -24,25 +24,51 @@ function main() {
 
     const scene = new THREE.Scene();
 
+    
+        const color = 0xFFFFFF;
+        const intensity = 1;
+        const light = new THREE.DirectionalLight(color, intensity);
+        light.position.set(-1, 2, 4);
+        scene.add(light);
+    
+
     const boxWidth = 1;
     const boxHeight = 1;
     const boxDepth = 1;
     const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
 
-    const material = new THREE.MeshBasicMaterial({color: 0x44aa88});  // greenish blue
+    const material = new THREE.MeshPhongMaterial({color: 0x44aa88});  // greenish blue
 
-    const cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
+    // const cube = new THREE.Mesh(geometry, material);
+    // scene.add(cube);
     function render(time) {
-        time *= 0.001;  // convert time to seconds
-        
-        cube.rotation.x = time;
-        cube.rotation.y = time;
-        
-        renderer.render(scene, camera);
-        
-        requestAnimationFrame(render);
+    time *= 0.001;  // convert time to seconds
+
+    cubes.forEach((cube, ndx) => {
+      const speed = 1 + ndx * .1;
+      const rot = time * speed;
+      cube.rotation.x = rot;
+      cube.rotation.y = rot;
+    });
+
+    renderer.render(scene, camera);
+
+    requestAnimationFrame(render);
+  }
+    function makeInstance( geometry , color, x ) {
+        const material = new THREE.MeshPhongMaterial({ color })
+        const cube = new THREE.Mesh( geometry, material )
+        scene.add(cube)
+
+        cube.position.x = x
+
+        return cube
     }
+    const cubes = [
+        makeInstance( geometry, 0x44aa88, 0),
+        makeInstance( geometry, 0x8844aa, -2),
+        makeInstance( geometry, 0xaa8844, 2),
+    ]
     requestAnimationFrame(render);
     renderer.render(scene, camera);
 }
